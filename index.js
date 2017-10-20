@@ -18,7 +18,9 @@ const connector = new builder.ChatConnector({
 
 server.post('/api/messages', connector.listen());
 
-const bot = new builder.UniversalBot(connector, session => {
+const bot = new builder.UniversalBot(connector);
+
+bot.dialog('/', session => {
   const ticker = axios.get(`${cAPI}/ticker?market=ETHCLP`).then(res => {
     const data = res.data.data[0];
     console.log(data);
