@@ -20,10 +20,13 @@ server.post('/api/messages', connector.listen());
 
 const bot = new builder.UniversalBot(connector);
 
-bot.dialog('/', session => {
-  const ticker = axios.get(`${cAPI}/ticker?market=ETHCLP`).then(res => {
+bot.dialog('/', function(session) {
+  const ticker = axios.get(`${cAPI}/ticker?market=ETHCLP`).then(function(res() {
     const data = res.data.data[0];
+    console.log(data);
     session.send('El precio de ETH esta en %s CLP', data.last_price);
+  }).catch(err => {
+    console.error(err);
+    session.send('Hubo un problema');
   });
-  session.send('hello');
 });
