@@ -24,9 +24,9 @@ bot.dialog('/', function(session) {
   const ticker = axios.get(`${cAPI}/ticker?market=ETHCLP`).then(res => {
     const data = res.data.data[0];
     console.log(data);
-    session.send('El precio de ETH esta en %s CLP', data.last_price);
+    session.send('El precio de ETH esta en %s CLP', data.bid);
   }).catch(err => {
     console.error(err);
-    session.send('Hubo un problema');
+    session.send('Hubo un problema: %s', err);
   });
 });
