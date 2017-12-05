@@ -1,10 +1,8 @@
 require('dotenv').config();
+const Bot = require('./src/bot');
 
 const restify = require('restify');
 const builder = require('botbuilder');
-const axios = require('axios');
-
-const cAPI = 'https://api.cryptomkt.com/v1'
 
 const server = restify.createServer();
 server.listen(process.env.PORT || 3978, () => {
@@ -17,16 +15,4 @@ const connector = new builder.ChatConnector({
 });
 
 server.post('/api/messages', connector.listen());
-
-const bot = new builder.UniversalBot(connector);
-
-bot.dialog('/', function(session) {
-  const ticker = axios.get(`${cAPI}/ticker?market=ETHCLP`).then(res => {
-    const data = res.data.data[0];
-    console.log(data);
-    session.send('El precio de ETH esta en %s CLP', data.ask);
-  }).catch(err => {
-    console.error(err);
-    session.send('Hubo un problema: %s', err);
-  });
-});
+Bot(connector);
